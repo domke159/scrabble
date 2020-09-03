@@ -1,0 +1,94 @@
+-- Name: Dominykas Mickevicius
+
+-- Fill in above lines before submission.
+
+-- 
+
+types
+
+Tile = char
+inv t == t in set tileSet;
+
+Word = seq of Tile;
+
+Dictionary = set of Word;
+
+LetterMap = map char to nat;
+
+Player = token;
+
+ScoreMap = map Player to nat;
+
+state Scorer of
+thePoints: LetterMap -- points scored for each tile
+theTiles: LetterMap -- initial distribution of tiles 
+theWords: Dictionary
+theScore: ScoreMap
+inv mk_Scorer(thePoints,theTiles,theWords, theScore) ==
+  dom thePoints = tileSet and dom theTiles = tileSet
+  and theWords <> {}
+init s ==
+  s = mk_Scorer( pointsMap, tilesLeft, smallWords, {|->} )
+end;
+
+
+functions
+GetWordScore: Word * LetterMap -> nat
+GetWordScore(word,points) == 
+  if word = [] then 0
+  else points(hd word) + GetWordScore(tl word, points)
+    measure
+    len word
+  ;
+
+Occurrences: Tile * Word -> nat
+Occurrences(tile,word) == len[word(i) | i in set inds word & word(i) = tile];
+
+EnoughTiles: Word * LetterMap -> bool
+EnoughTiles(word, tiles) == 
+  if word = [] then true 
+  else
+    if tiles(hd word) >= Occurrences(hd word, word) then EnoughTiles(tl word, tiles)
+    else false
+  measure
+    len word
+  ;
+
+ValidWord: Word * Dictionary -> bool
+ValidWord(word, dictionary) ==
+  if Occurrences('_', word) = 0 then word in set dictionary
+  else	
+    exists w in set dictionary & 
+      EqualWord(word, w)
+  ;
+
+-- function to check if two words are the same (including underscores)
+EqualWord: Word * Word -> bool
+EqualWord(word1, word2) ==
+  forall tile in set inds word2 &
+  if len(word1) = len(word2) then 
+    if word1(tile) = '_' then true
+    else word1(tile) = word2(tile)
+  else false		
+  ; 
+  
+operations
+ScoreWord: Player * Word ==> ()
+ScoreWord(player, word) ==
+  (theScore:= theScore ++ {player |-> (theScore(player) + GetWordScore(word,thePoints))};
+  RemoveTiles(word))
+pre EnoughTiles(word,theTiles) and ValidWord(word, theWords) 
+;
+
+AddPlayer: Player ==> ()
+AddPlayer(p) ==
+  theScore:= theScore munion {p |-> 0}
+;
+
+RemoveTiles: Word ==> ()
+RemoveTiles(word) ==
+theTiles := theTiles ++
+ { t |-> theTiles(t) - Occurrences (t, word) | t in set dom theTiles
+ & t in set elems word };
+ 
+
