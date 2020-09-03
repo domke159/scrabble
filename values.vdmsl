@@ -21,19 +21,19 @@ tileSet: set of char = {BLANK} union elems "abcdefghijklmnopqrstuvwxyz";
 pointsMap: LetterMap = 
 	  {BLANK |-> 0, 'k' |-> 5}
 	  munion { c |-> 1 | c in set elems "eaotinrslu"}
-		munion	{ c |-> 2 | c in set elems "dg"}
-		munion	{ c |-> 3 | c in set elems "cmbp"}
-		munion	{ c |-> 4 | c in set elems "hfwyv"}
-		munion	{ c |-> 8 | c in set elems "jx"}
-		munion	{ c |-> 10 | c in set elems "qz"};
+          munion { c |-> 2 | c in set elems "dg"}
+	  munion { c |-> 3 | c in set elems "cmbp"}
+	  munion { c |-> 4 | c in set elems "hfwyv"}
+	  munion { c |-> 8 | c in set elems "jx"}
+	  munion { c |-> 10 | c in set elems "qz"};
 		
 tilesLeft: LetterMap = 
-  { BLANK |-> 2, 'g' |-> 3, 'o' |-> 8, 'e' |-> 12}
-	munion { c |-> 1 | c in set elems "kjxqz" }
-	munion { c |-> 2 | c in set elems "bcmpfhvwy"}
-	munion { c |-> 4 | c in set elems "lsud"}
-	munion { c |-> 6 | c in set elems "nrt"}
-	munion { c |-> 9 | c in set elems "ai"}
+  	  { BLANK |-> 2, 'g' |-> 3, 'o' |-> 8, 'e' |-> 12}
+	  munion { c |-> 1 | c in set elems "kjxqz" }
+	  munion { c |-> 2 | c in set elems "bcmpfhvwy"}
+	  munion { c |-> 4 | c in set elems "lsud"}
+	  munion { c |-> 6 | c in set elems "nrt"}
+	  munion { c |-> 9 | c in set elems "ai"}
 	
 	
 values
