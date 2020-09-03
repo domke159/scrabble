@@ -1,9 +1,5 @@
 -- Name: Dominykas Mickevicius
 
--- Fill in above lines before submission.
-
--- 
-
 types
 
 Tile = char
